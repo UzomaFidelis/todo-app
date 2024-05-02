@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  @font-face {
+    font-family: "Josefin Sans";
+    src: url("./assets/fonts/JosefinSans-Regular.ttf");
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: "Josefin Sans";
+    src: url("./assets/fonts/JosefinSans-Bold.ttf");
+    font-weight: 700;
+  }
+}
