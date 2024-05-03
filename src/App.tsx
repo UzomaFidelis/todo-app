@@ -215,7 +215,11 @@ function App() {
                 <DragDropContext onDragEnd={onDragEnd}>
                   <Droppable droppableId="list">
                     {(provided) => (
-                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                      <ul
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        className="flex flex-col list-none gap-[2px]"
+                      >
                         {filteredTasks.map((task, index) => (
                           <Draggable
                             draggableId={task.id}
@@ -223,24 +227,24 @@ function App() {
                             index={index}
                           >
                             {(provided) => (
-                              <ul
+                              <li
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                               >
-                                <li>
+                                <span>
                                   <Task
                                     onMark={() => handleTaskCompletion(task.id)}
                                     onDelete={handleDelete}
                                     {...task}
                                   />
-                                </li>
-                              </ul>
+                                </span>
+                              </li>
                             )}
                           </Draggable>
                         ))}
                         {provided.placeholder}
-                      </div>
+                      </ul>
                     )}
                   </Droppable>
                 </DragDropContext>
