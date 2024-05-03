@@ -3,11 +3,14 @@ import Task from "./components/Task";
 import data from "./data.json";
 import { TodoTask } from "./types";
 
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 function App() {
   const [tasks, setTasks] = useState<TodoTask[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<TodoTask[]>([]);
   const [theme, setTheme] = useState("");
   const [filterCondition, setFilterCondition] = useState("all");
+
   const themeCheckBoxRef = useRef<HTMLInputElement>(null);
   const newTaskInputRef = useRef<HTMLInputElement>(null);
   const numActiveTasks = useMemo(() => {
@@ -22,8 +25,6 @@ function App() {
         }
         return task;
       });
-
-      // console.log(updatedTasks);
 
       return updatedTasks;
     });
@@ -54,6 +55,25 @@ function App() {
     });
   };
 
+  const reorder = (list: TodoTask[], startIndex: number, endIndex: number) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  };
+
+  const onDragEnd = (result) => {
+    if (!result.destination) return;
+    if (result.destination.index === result.source.index) return;
+    const reorderedTasks = reorder(
+      tasks,
+      result.source.index,
+      result.destination.index
+    );
+
+    setTasks(reorderedTasks);
+  };
+
   useEffect(() => {
     setTasks(data.tasks);
     const repositionFilters = () => {
@@ -65,12 +85,10 @@ function App() {
         containerLg.style.display = "block";
         containerLg.append(radios);
         containerSm.style.display = "none";
-        console.log("now in LG container");
       } else if (radios && containerSm && containerLg) {
         containerSm.style.display = "block";
         containerSm.append(radios);
         containerLg.style.display = "none";
-        console.log("now in SM container");
       }
     };
     repositionFilters();
@@ -166,14 +184,39 @@ function App() {
           <section>
             <div className="bg-gray-blue-50/40 mt-[1rem] overflow-hidden rounded-lg shadow-gray-blue-50 shadow-lg dark:bg-gray-blue-500 dark:shadow-none md:mt-[1.5rem]">
               <div className="flex flex-col gap-[2px]">
-                {filteredTasks.map((taskObj, idx) => (
-                  <Task
-                    key={idx}
-                    onMark={() => handleTaskCompletion(taskObj.id)}
-                    onDelete={() => handleDelete(taskObj.id)}
-                    {...taskObj}
-                  />
-                ))}
+                <DragDropContext onDragEnd={onDragEnd}>
+                  <Droppable droppableId="list">
+                    {(provided) => (
+                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                        {filteredTasks.map((task, index) => (
+                          <Draggable
+                            draggableId={task.id}
+                            key={task.id}
+                            index={index}
+                          >
+                            {(provided) => (
+                              <ul
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <li>
+                                  <Task
+                                    onMark={() => handleTaskCompletion(task.id)}
+                                    onDelete={() => handleDelete(task.id)}
+                                    {...task}
+                                  />
+                                </li>
+                              </ul>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
+
                 <div className="flex justify-between text-[0.7rem] px-[1.3rem] py-[1.1rem] bg-light-gray text-gray-blue-200 relative dark:bg-gray-blue-600 dark:text-gray-blue-400 md:px-[1.5rem] md:pb-[0.8rem]">
                   <p className="dark:hover:text-light-gray/70 md:text-[0.9rem] md:tracking-[-0.02em]">
                     {numActiveTasks > 1

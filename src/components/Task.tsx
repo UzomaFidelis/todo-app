@@ -1,6 +1,5 @@
 import { TaskProps } from "../types";
 import checkIcon from "../assets/images/icon-check.svg";
-import { useSpring } from "@react-spring/web";
 
 const Task = ({ task, completed, onMark, onDelete }: TaskProps) => {
   return (
