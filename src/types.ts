@@ -8,5 +8,5 @@ export type TodoTask = {
 
 export type TaskProps = TodoTask & {
   onMark: (e: SyntheticEvent) => void;
-  onDelete: (e: SyntheticEvent) => void;
+  onDelete: (id: string) => void;
 };

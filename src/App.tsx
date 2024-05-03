@@ -42,15 +42,27 @@ function App() {
           completed: false,
         };
 
-        setTasks((currentTasks) => [...currentTasks, newTask]);
+        setTasks((currentTasks) => {
+          localStorage.setItem(
+            "tasks",
+            JSON.stringify([...currentTasks, newTask])
+          );
+          return [...currentTasks, newTask];
+        });
         newTaskInputRef.current.value = "";
       }
     }
   };
 
+  const handleClearCompletedaTasks = () => {
+    const active = tasks.filter((task) => !task.completed);
+    setTasks(active);
+  };
+
   const handleDelete = (id: string) => {
     setTasks((currentTasks) => {
       const updatedTasks = currentTasks.filter((task) => task.id !== id);
+      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
       return updatedTasks;
     });
   };
@@ -72,12 +84,23 @@ function App() {
     );
 
     setTasks(reorderedTasks);
+    localStorage.setItem("tasks", JSON.stringify(reorderedTasks));
   };
 
   useEffect(() => {
-    setTasks(data.tasks);
+    const localSavedTasks = localStorage.getItem("tasks");
+    console.log(localSavedTasks);
+
+    if (localSavedTasks) {
+      setTasks(JSON.parse(localSavedTasks));
+      console.log("parsed: ", JSON.parse(localSavedTasks));
+    } else {
+      setTasks(data.tasks);
+    }
+
+    // Reposition Filter Radio buttons on window resize
     const repositionFilters = () => {
-      const mq = window.matchMedia("(min-width: 1280px)");
+      const mq = window.matchMedia("(min-width: 768px)");
       const radios = document.getElementById("filter-radios");
       const containerLg = document.getElementById("filters-container-lg");
       const containerSm = document.getElementById("filters-container-sm");
@@ -174,7 +197,7 @@ function App() {
               placeholder="Create a new todo..."
               onKeyDown={handleTaskEntry}
               ref={newTaskInputRef}
-              className="w-full h-[3rem] rounded-[0.3rem] outline-none pl-[3.2rem] mx-auto placeholder:text-[0.8rem] placeholder:tracking-[-0.042em] bg-light-gray dark:bg-gray-blue-600 dark:text-gray-blue-50 md:text-[1.25rem] md:placeholder:text-[1.25rem] md:placeholder:tracking-[-0.06em] md:h-[4rem] md:pl-[4.45rem] "
+              className="w-full h-[3rem] rounded-[0.3rem] outline-none pl-[3.2rem] mx-auto placeholder:text-[0.8rem] placeholder:tracking-[-0.042em] bg-light-gray dark:bg-gray-blue-600 dark:text-gray-blue-50 md:text-[1.25rem] md:placeholder:text-[1.25rem] md:placeholder:tracking-[-0.06em] md:h-[4rem] md:pl-[4.45rem]"
             />
             <label htmlFor="new-task" className="sr-only">
               Enter new task
@@ -203,7 +226,7 @@ function App() {
                                 <li>
                                   <Task
                                     onMark={() => handleTaskCompletion(task.id)}
-                                    onDelete={() => handleDelete(task.id)}
+                                    onDelete={handleDelete}
                                     {...task}
                                   />
                                 </li>
@@ -225,7 +248,10 @@ function App() {
                     left
                   </p>
                   <div id="filters-container-lg" className="hidden"></div>
-                  <button className="tracking-wide hover:text-gray-blue-400 dark:hover:text-light-gray/70 md:text-[0.9rem] md:tracking-[-0.02em]">
+                  <button
+                    className="tracking-wide hover:text-gray-blue-400 dark:hover:text-light-gray/70 md:text-[0.9rem] md:tracking-[-0.02em]"
+                    onClick={handleClearCompletedaTasks}
+                  >
                     Clear Completed
                   </button>
                 </div>
