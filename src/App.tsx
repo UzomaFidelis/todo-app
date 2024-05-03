@@ -3,7 +3,12 @@ import Task from "./components/Task";
 import data from "./data.json";
 import { TodoTask } from "./types";
 
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "react-beautiful-dnd";
 
 function App() {
   const [tasks, setTasks] = useState<TodoTask[]>([]);
@@ -74,7 +79,7 @@ function App() {
     return result;
   };
 
-  const onDragEnd = (result) => {
+  const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     if (result.destination.index === result.source.index) return;
     const reorderedTasks = reorder(
