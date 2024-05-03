@@ -186,7 +186,7 @@ function App() {
             htmlFor="theme"
             className={`${
               theme === "dark" ? "bg-sun-icon" : "bg-moon-icon"
-            } w-[19px] bg-center bg-contain bg-no-repeat cursor-pointer md:w-[24px] md:h-[24px]`}
+            } w-[19px] h-[19px] bg-center bg-contain bg-no-repeat cursor-pointer md:w-[24px] md:h-[24px]`}
           >
             <span className="sr-only">dark mode</span>
           </label>
