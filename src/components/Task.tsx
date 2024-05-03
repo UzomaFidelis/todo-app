@@ -32,7 +32,7 @@ const Task = ({ task, completed, onMark, onDelete, id }: TaskProps) => {
         >
           <span className="sr-only">mark complete</span>
           {completed ? (
-            <img src={checkIcon} className="w-full h-full" />
+            <img src={checkIcon} alt="check mark" className="w-full h-full" />
           ) : (
             <></>
           )}
