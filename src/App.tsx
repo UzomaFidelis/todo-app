@@ -189,6 +189,7 @@ function App() {
         </div>
       </header>
       <main className="bg-gray-blue-50/40 dark:bg-transparent">
+        <h1 className="sr-only">Create your todo list</h1>
         <div className="relative top-[-5.7rem] text-center px-[1.5rem] md:top-[-8.9rem] md:w-[36.8rem] md:mx-auto">
           <div className="relative before:block before:absolute before:h-[1.3rem] before:w-[1.3rem] before:top-2/4 before:-translate-y-2/4 before:left-[1.2rem] before:rounded-full before:border-[1px] before:border-gray-blue-50 md:before:left-[1.49rem] md:before:h-[1.55rem] md:before:w-[1.55rem]">
             <input
@@ -198,7 +199,7 @@ function App() {
               placeholder="Create a new todo..."
               onKeyDown={handleTaskEntry}
               ref={newTaskInputRef}
-              className="w-full h-[3rem] rounded-[0.3rem] outline-none pl-[3.2rem] mx-auto placeholder:text-[0.8rem] placeholder:tracking-[-0.042em] bg-light-gray dark:bg-gray-blue-600 dark:text-gray-blue-50 md:text-[1.25rem] md:placeholder:text-[1.25rem] md:placeholder:tracking-[-0.06em] md:h-[4rem] md:pl-[4.45rem]"
+              className="w-full h-[3rem] rounded-[0.3rem] outline-none pl-[3.2rem] mx-auto placeholder:text-[0.8rem] placeholder:tracking-[-0.042em] bg-light-gray focus:border-[2px] focus:border-gray-blue-600 dark:bg-gray-blue-600 dark:text-gray-blue-50 dark:focus:border-gray-blue-100 md:text-[1.25rem] md:placeholder:text-[1.25rem] md:placeholder:tracking-[-0.06em] md:h-[4rem] md:pl-[4.45rem]"
             />
             <label htmlFor="new-task" className="sr-only">
               Enter new task

@@ -30,6 +30,7 @@ const Task = ({ task, completed, onMark, onDelete, id }: TaskProps) => {
               : ""
           }`}
         >
+          <span className="sr-only">mark complete</span>
           {completed ? (
             <img src={checkIcon} className="w-full h-full" />
           ) : (
@@ -55,7 +56,13 @@ const Task = ({ task, completed, onMark, onDelete, id }: TaskProps) => {
           }}
           className="inline outline-none w-[0.9rem] h-[0.9rem]"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+          <span className="sr-only">Delete Task</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            aria-hidden
+          >
             <path
               fill="#494C6B"
               fillRule="evenodd"
