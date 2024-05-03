@@ -30,7 +30,7 @@ function App() {
         }
         return task;
       });
-
+      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
       return updatedTasks;
     });
   };
