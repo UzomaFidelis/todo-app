@@ -36,10 +36,8 @@ function App() {
   };
 
   const handleTaskEntry = (e: KeyboardEvent) => {
-    if (e.code === "Enter") {
-      console.log("Enter key pressed");
-      console.log(newTaskInputRef.current?.value);
-
+    console.log(e.key);
+    if (e.code === "Enter" || e.key === "Enter") {
       if (newTaskInputRef.current?.value) {
         const newTask = {
           id: crypto.randomUUID(),
@@ -94,11 +92,9 @@ function App() {
 
   useEffect(() => {
     const localSavedTasks = localStorage.getItem("tasks");
-    console.log(localSavedTasks);
 
     if (localSavedTasks) {
       setTasks(JSON.parse(localSavedTasks));
-      console.log("parsed: ", JSON.parse(localSavedTasks));
     } else {
       setTasks(data.tasks);
     }
